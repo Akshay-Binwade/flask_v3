@@ -1,0 +1,19 @@
+[
+  {"question": "Why do we use flask?",
+    "answer": "Flask is a lightweight web-framework. It is easier to write small applications in Flask"
+  },
+    {"question": "what is pydantic used for?",
+    "answer": "data validation"
+  },
+    {"question": "what output `id()` function generates?",
+    "answer": "identification (memory address) of object"
+  },
+  {
+    "question": "What are HTTP verbs (methods)?",
+    "answer": "GET, POST, PUT, PATCH, DELETE"
+  },
+    {
+    "question": "What are HTTP status codes?",
+    "answer": "200 (SUCCESS), 404 (NOT FOUND), 302 (REDIRECT), 500 (INTERNAL SERVER ERROR)"
+  }
+]
