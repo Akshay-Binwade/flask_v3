@@ -90,7 +90,7 @@ def put_info(req_data, table, primary_key, primary_val, validator):
     # print(f"update {table} set {', '.join(col_val_pair)} where {primary_key}={primary_val}")
 
     try:
-        mycursor.execute(f"update {table} set {', '.join(col_val_pair)} where {primary_key}={primary_val}")
+        mycursor.execute(f"update {table} set  where {primary_key}={primary_val}")
         connection.commit()
         return f"Success, {primary_key}: {primary_val} is updated...!!!"
 
@@ -99,59 +99,44 @@ def put_info(req_data, table, primary_key, primary_val, validator):
 
 
 
-        # if data.get("url") is not "Null":
-        #     columns_ = ", ".join(data.keys())
-        #     primary_value = data.get("url").split("/")[-2]
-        #     print(primary_value)
-        #     # print()
-        #     values_1 = list(data.values())
-        #     values_1.append(primary_value)
-        #     # print("values_2:", values_1)
-        #
-        #     # query = f"insert into {table} ({', '.join(data.keys())}) values {tuple(data.values())}"
-        #     # query = f"insert into {table} ({columns_},{primary_key}) values {tuple(values_1)}"
-        #     query = f"insert into {table} ({columns_},{primary_key}) values {tuple(values_1)} ON DUPLICATE KEY UPDATE {primary_key}= {primary_value};"
-        #     print(query)
-        #     print()
-        #     print()
-        #
-        #     try:
-        #         # mycursor.execute(f"insert into {table} ({', '.join(data.keys())}) values {tuple(data.values())}")
-        #         # mycursor.execute(f"insert into {table} ({columns_},{primary_key}) values {tuple(values_1)}")
-        #         mycursor.execute(f"insert into {table} ({columns_},{primary_key}) values {tuple(values_1)} ON DUPLICATE KEY UPDATE {primary_key}= {primary_value};")
-        #         connection.commit()
-        #         print(f"{table} is updated with id {primary_value}...!!!")
-        #
-        #     except:
-        #         print(f"Could not add data in {table} for id {primary_value}")
-        #     print("*" * 30)
-        #
-        #
-        # else:
-        #     columns_ = ", ".join(data.keys())
-        #     # print()
-        #     values_1 = list(data.values())
-        #     values_1.append(primary_val)
-        #     # print("values_2:", values_1)
-        #
-        #     # query = f"insert into {table} ({', '.join(data.keys())}) values {tuple(data.values())}"
-        #     # query = f"insert into {table} ({columns_},{primary_key}) values {tuple(values_1)}"
-        #     query = f"insert into {table} ({columns_},{primary_key}) values {tuple(values_1)} ON DUPLICATE KEY UPDATE {primary_key}= {primary_val};"
-        #     print(query)
-        #     print()
-        #     print()
-        #
-        #     try:
-        #         # mycursor.execute(f"insert into {table} ({', '.join(data.keys())}) values {tuple(data.values())}")
-        #         # mycursor.execute(f"insert into {table} ({columns_},{primary_key}) values {tuple(values_1)}")
-        #         mycursor.execute(
-        #             f"insert into {table} ({columns_},{primary_key}) values {tuple(values_1)} ON DUPLICATE KEY UPDATE {primary_key}= {primary_val};")
-        #         connection.commit()
-        #         print(f"{table} is updated with id {primary_val}...!!!")
-        #
-        #     except:
-        #         print(f"Could not add data in {table} for id {primary_val}")
-        #     print("*" * 30)
+def patch_info(data, table, primary_key, primary_val, validator):
+    from pydantic.error_wrappers import ValidationError
+    try:
+        v_data = validator(**data)
+        # data = dict(v_data)
+        # print(data)
+    except ValidationError as ve:
+        return f"bad request...!!!{ve}"
+
+    # To remove the key value pair from validated data having `None` value.
+    data = {}
+    for k, v in dict(v_data).items():
+        if v is not None:
+            data[k] = v
+
+    columns_ = ", ".join(data.keys())
+    values_1 = list(data.values())
+    values_1.append(primary_val)
+
+    col_val_pair = []
+    for k, v in zip(columns_.split(','), list(data.values())):
+        col_val_pair.append(f'''{k}="{v}"''')
+
+    # query = f"insert into {table} ({', '.join(data.keys())}) values {tuple(data.values())}"
+    # query = f"insert into {table} ({columns_},{primary_key}) values {tuple(values_1)}"
+    query = f"insert into {table} ({columns_},{primary_key}) values {tuple(values_1)} ON DUPLICATE KEY UPDATE {', '.join(col_val_pair)};"
+    print(query)
+    print()
+    print()
+
+    try:
+        mycursor.execute(f"insert into {table} ({columns_},{primary_key}) values {tuple(values_1)} ON DUPLICATE KEY UPDATE {', '.join(col_val_pair)};")
+        connection.commit()
+        return f"{primary_key}: {primary_val} is updated...!!!"
+
+    except:
+        return f"Could not update {primary_key}: {primary_val}"
+
 
 
 

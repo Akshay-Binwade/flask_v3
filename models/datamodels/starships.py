@@ -43,6 +43,24 @@ class St_PutOrPost(Base):
     starship_class: str
     passengers: str
 
+class St_Patch(BaseModel):
+    MGLT: Optional[str]
+    cargo_capacity: Optional[str]
+    consumables: Optional[str]
+    cost_in_credits: Optional[str]
+    crew: Optional[str]
+    hyperdrive_rating: Optional[str]
+    length: Optional[str]
+    manufacturer: Optional[str]
+    max_atmosphering_speed: Optional[str]
+    model: Optional[str]
+    name: Optional[str]
+    starship_class: Optional[str]
+    passengers: Optional[str]
+    created: Optional[str]
+    edited: Optional[str]
+    url: Optional[str]
+
 class Starship_(Base):
     """ Pydantic model class meant to validate the data for `Starship` object from single resource
         endpoint from starwars API.

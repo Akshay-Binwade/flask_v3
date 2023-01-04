@@ -34,6 +34,21 @@ class C_PostOrPut(Base):
     gender: str
     homeworld: str
 
+
+class C_Patch(BaseModel):
+    name: Optional[str]
+    height: Optional[str]
+    mass: Optional[str]
+    hair_color: Optional[str]
+    skin_color: Optional[str]
+    eye_color: Optional[str]
+    birth_year: Optional[str]
+    gender: Optional[str]
+    homeworld: Optional[str]
+    created: Optional[str]
+    edited: Optional[str]
+    url: Optional[str]
+
 class Character_(Base):
     name: str
     height: str

@@ -1,13 +1,13 @@
 import json
-from models.dal.methods import get_info, get_infos, post_info, put_info
+from models.dal.methods import get_info, get_infos, post_info, put_info, patch_info
 from flask import Flask, Blueprint, Response, request
 
-from models.datamodels.films import Films_from_db, F_PostOrPut
-from models.datamodels.characters import Char_from_db, C_PostOrPut
-from models.datamodels.planets import Plan_from_db, P_PostOrPut
-from models.datamodels.species import Species_from_db, Sp_PostOrPut
-from models.datamodels.starships import Starships_from_db, St_PutOrPost
-from models.datamodels.vehicles import Vehicles_from_db, V_PostOrPut
+from models.datamodels.films import Films_from_db, F_PostOrPut, F_Patch
+from models.datamodels.characters import Char_from_db, C_PostOrPut, C_Patch
+from models.datamodels.planets import Plan_from_db, P_PostOrPut, P_Patch
+from models.datamodels.species import Species_from_db, Sp_PostOrPut, Sp_Patch
+from models.datamodels.starships import Starships_from_db, St_PutOrPost, St_Patch
+from models.datamodels.vehicles import Vehicles_from_db, V_PostOrPut, V_Patch
 
 
 crud_app = Blueprint("crud_ops", __name__)
@@ -99,6 +99,12 @@ def put_film(id):
 #     result = put_info(dict(v_data), "films", "film_id", id)
 #     return Response(json.dumps(result), status=200, mimetype="application/json")
 
+@crud_app.route("/films/<int:id>", methods=['PATCH'])
+def patch_film(id):
+    req_data = request.json
+    result = patch_info(req_data, "films", "film_id", id, F_Patch)
+    resp_msg = json.dumps({"message": result})
+    return Response(resp_msg, status=200, mimetype="application/json")
 # ---------------------------------------------------------------------------------------------
 
 @crud_app.route("/planets", methods=["GET"])
@@ -126,6 +132,12 @@ def put_planet(id):
     resp_msg = json.dumps({"message": result})
     return Response(resp_msg, status=200, mimetype="application/json")
 
+@crud_app.route("/planets/<int:id>", methods=['PATCH'])
+def patch_planet(id):
+    req_data = request.json
+    res = patch_info(req_data, "planets", "planet_id", id, P_Patch)
+    resp_msg = json.dumps({"message": res})
+    return Response(resp_msg, status=200, mimetype="application/json")
 # ---------------------------------------------------------------------------------------------
 
 @crud_app.route("/species", methods=["GET"])
@@ -152,6 +164,14 @@ def post_species(id_):
 def put_species(id):
     req_data = request.json
     result = put_info(req_data, "species", "species_id", id, Sp_PostOrPut)
+    resp_msg = json.dumps({"message": result})
+    return Response(resp_msg, status=200, mimetype="application/json")
+
+
+@crud_app.route("/species/<int:id>", methods=['PATCH'])
+def patch_species(id):
+    req_data = request.json
+    result = patch_info(req_data, "species", "species_id", id, Sp_Patch)
     resp_msg = json.dumps({"message": result})
     return Response(resp_msg, status=200, mimetype="application/json")
 
@@ -184,6 +204,14 @@ def put_starship(id):
     resp_msg = json.dumps({"message": result})
     return Response(resp_msg, status=200, mimetype="application/json")
 
+
+@crud_app.route("/starships/<int:id>", methods=['PATCH'])
+def patch_starship(id):
+    req_data = request.json
+    res = patch_info(req_data, "starships", "starship_id", id, St_Patch)
+    resp_msg = json.dumps({"message": res})
+    return Response(resp_msg, status=200, mimetype="application/json")
+
 # ---------------------------------------------------------------------------------------------
 
 
@@ -211,6 +239,14 @@ def put_vehicle(id):
     req_data = request.json
     result = put_info(req_data, "vehicles", "vehicle_id", id, V_PostOrPut)
     resp_msg = json.dumps({"message": result})
+    return Response(resp_msg, status=200, mimetype="application/json")
+
+
+@crud_app.route("/vehicles/<int:id>", methods=['PATCH'])
+def patch_vehicle(id):
+    req_data = request.json
+    res = patch_info(req_data, "vehicles", "vehicle_id", id, V_Patch)
+    resp_msg = json.dumps({"message": res})
     return Response(resp_msg, status=200, mimetype="application/json")
 
 # ---------------------------------------------------------------------------------------------
@@ -241,6 +277,14 @@ def put_character(id):
     req_data = request.json
     result = put_info(req_data, "characters", "char_id", id, C_PostOrPut)
     resp_msg = json.dumps({"message": result})
+    return Response(resp_msg, status=200, mimetype="application/json")
+
+
+@crud_app.route("/characters/<int:id>", methods=['PATCH'])
+def patch_character(id):
+    req_data = request.json
+    res = patch_info(req_data, "characters", "char_id", id, C_Patch)
+    resp_msg = json.dumps({"message": res})
     return Response(resp_msg, status=200, mimetype="application/json")
 
 # ---------------------------------------------------------------------------------------------

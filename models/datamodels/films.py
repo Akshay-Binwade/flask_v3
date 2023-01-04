@@ -24,13 +24,15 @@ class Films_from_db(BaseModel):
         return release_date.strftime("%Y-%m-%d")
 
 
-class F_Patch(Base):
+class F_Patch(BaseModel):
     title: Optional[str]
     episode_id: Optional[str]
     opening_crawl: Optional[str]
     director: Optional[str]
     producer: Optional[str]
-    release_date: Union[str,date]
+    release_date: Optional[str]
+    created: Optional[str]
+    edited: Optional[str]
     url: Optional[str]
 
 class F_PostOrPut(Base):
@@ -119,7 +121,17 @@ if __name__ == "__main__":
         "edited": "2014-12-20T19:49:45.256000Z",
         "url": "https://swapi.dev/api/films/1/"
     }
-    obj = Film_(**data)
+
+    data2 = {
+    "title": "Revenge of the Sith",
+    "episode_id": 3,
+    "created": "2014-12-20T18:49:38.403000Z",
+    "edited": "2014-12-20T20:47:52.073000Z",
+    "url": "https://swapi.dev/api/films/6/"}
+
+
+    # obj = Film_(**data)
+    obj = F_Patch(**data2)
     # print(obj)
     pprint(dict(obj), sort_dicts=False)
 

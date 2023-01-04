@@ -37,6 +37,21 @@ class Sp_PostOrPut(Base):
     skin_colors: str
 
 
+class Sp_Patch(BaseModel):
+    average_height: Optional[str]
+    average_lifespan: Optional[str]
+    classification: Optional[str]
+    designation: Optional[str]
+    eye_colors: Optional[str]
+    hair_colors: Optional[str]
+    homeworld: Optional[str]
+    language: Optional[str]
+    name: Optional[str]
+    skin_colors: Optional[str]
+    created: Optional[str]
+    edited: Optional[str]
+    url: Optional[str]
+
 class Species_(Base):
     """ Pydantic model class meant to validate the data for `Species` object from
         single resource endpoint from starwars API.

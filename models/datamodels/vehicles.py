@@ -37,6 +37,21 @@ class V_PostOrPut(Base):
     passengers: int
     vehicle_class: str
 
+class V_Patch(BaseModel):
+    cargo_capacity: Optional[str]
+    consumables: Optional[str]
+    cost_in_credits: Optional[str]
+    crew: Optional[str]
+    length: Optional[str]
+    manufacturer: Optional[str]
+    max_atmosphering_speed: Optional[str]
+    model: Optional[str]
+    name: Optional[str]
+    passengers: Optional[str]
+    vehicle_class: Optional[str]
+    created: Optional[str]
+    edited: Optional[str]
+    url: Optional[str]
 class Vehicle_(Base):
     """ Pydantic model class meant to validate the data for `Vehicle` object from
         single resource endpoint from starwars API.

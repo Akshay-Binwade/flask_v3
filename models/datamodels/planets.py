@@ -42,6 +42,19 @@ class P_PostOrPut(Base):
             return 0
         return population
 
+class P_Patch(BaseModel):
+    climate: Optional[str]
+    diameter: Optional[str]
+    gravity: Optional[str]
+    name: Optional[str]
+    orbital_period: Optional[str]
+    population: Optional[str]
+    rotation_period: Optional[str]
+    surface_water: Optional[str]
+    terrain: Optional[str]
+    created: Optional[str]
+    edited: Optional[str]
+    url: Optional[str]
 
 class Planet_(Base):
     """ Pydantic model class meant to validate the data for `Planet` object from
