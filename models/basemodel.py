@@ -10,7 +10,7 @@ from typing import Union, Optional
 class Base(BaseModel):
     """common attributes available in all resources"""
 
-    created: str or datetime
+    created: datetime
     edited: datetime
     url: str
 

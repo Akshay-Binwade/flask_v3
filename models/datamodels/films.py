@@ -24,6 +24,23 @@ class Films_from_db(BaseModel):
         return release_date.strftime("%Y-%m-%d")
 
 
+class F_Patch(Base):
+    title: Optional[str]
+    episode_id: Optional[str]
+    opening_crawl: Optional[str]
+    director: Optional[str]
+    producer: Optional[str]
+    release_date: Union[str,date]
+    url: Optional[str]
+
+class F_PostOrPut(Base):
+    title: str
+    episode_id: str
+    opening_crawl: str
+    director: str
+    producer: str
+    release_date: Union[str,date]
+    url: str
 
 class Film_(Base):
     title: str

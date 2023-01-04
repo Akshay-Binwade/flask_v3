@@ -6,7 +6,7 @@ for validation and (de)serialization in API requests/responses.
 from typing import List, Optional
 from decimal import Decimal
 from models.basemodel import Base
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 class Plan_from_db(BaseModel):
     climate: str
@@ -22,6 +22,25 @@ class Plan_from_db(BaseModel):
     edited: str
     url: str
 
+class P_PostOrPut(Base):
+    climate: str
+    diameter: str
+    gravity: str
+    name: str
+    orbital_period: str
+    population: str
+    rotation_period: str
+    surface_water: str
+    terrain: str
+
+    @validator("population")
+    @classmethod
+    def val_people(cls, population):
+        try:
+            population == int(population)
+        except ValueError:
+            return 0
+        return population
 
 
 class Planet_(Base):

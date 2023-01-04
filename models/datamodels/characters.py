@@ -23,6 +23,17 @@ class Char_from_db(BaseModel):
     url: str
 
 
+class C_PostOrPut(Base):
+    name: str
+    height: str
+    mass: str
+    hair_color: str
+    skin_color: str
+    eye_color: str
+    birth_year: str
+    gender: str
+    homeworld: str
+
 class Character_(Base):
     name: str
     height: str

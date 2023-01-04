@@ -24,6 +24,18 @@ class Species_from_db(BaseModel):
     url: str
 
 
+class Sp_PostOrPut(Base):
+    average_height: str
+    average_lifespan: str
+    classification: str
+    designation: str
+    eye_colors: str
+    hair_colors: str
+    homeworld: Optional[str]
+    language: str
+    name: str
+    skin_colors: str
+
 
 class Species_(Base):
     """ Pydantic model class meant to validate the data for `Species` object from

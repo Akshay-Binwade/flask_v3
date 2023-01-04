@@ -28,7 +28,20 @@ class Starships_from_db(BaseModel):
     url: str
 
 
-
+class St_PutOrPost(Base):
+    MGLT: str
+    cargo_capacity: str
+    consumables: str
+    cost_in_credits: str
+    crew: str
+    hyperdrive_rating: str
+    length: str
+    manufacturer: str
+    max_atmosphering_speed: str
+    model: str
+    name: str
+    starship_class: str
+    passengers: str
 
 class Starship_(Base):
     """ Pydantic model class meant to validate the data for `Starship` object from single resource
