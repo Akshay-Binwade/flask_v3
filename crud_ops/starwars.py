@@ -1,5 +1,5 @@
 import json
-from models.dal.methods import get_info, get_infos, post_info, put_info, patch_info
+from models.dal.methods import get_info, get_infos, post_info, put_info, patch_info, delete_info
 from flask import Flask, Blueprint, Response, request
 
 from models.datamodels.films import Films_from_db, F_PostOrPut, F_Patch
@@ -83,7 +83,7 @@ def post_film(id):
 def put_film(id):
     req_data = request.json
     result = put_info(req_data, "films", "film_id",id, F_PostOrPut)
-    resp_msg = json.dumps({"message": result})
+    resp_msg = json.dumps({"message": "Success, updated record...!" if result == 1 else "[ERROR] No records found!"})
     return Response(resp_msg, status=200, mimetype="application/json")
 
 # @crud_app.route("/films/<int:id>", methods=['PUT'])
@@ -105,7 +105,15 @@ def patch_film(id):
     result = patch_info(req_data, "films", "film_id", id, F_Patch)
     resp_msg = json.dumps({"message": result})
     return Response(resp_msg, status=200, mimetype="application/json")
-# ---------------------------------------------------------------------------------------------
+
+
+@crud_app.route("/films", methods=['DELETE'])
+def delete_film():
+    id = request.args.get("film_id")
+    result = delete_info("films", "film_id", id)
+    resp_msg = json.dumps({"message": "Success, deleted record...!" if result == 1 else "[ERROR] No records found!"})
+    return Response(resp_msg, status=200, mimetype="application/json")
+# --------------------------------------------------------------------------------------------------------------------
 
 @crud_app.route("/planets", methods=["GET"])
 def get_planets():
@@ -129,7 +137,7 @@ def post_planet(id_):
 def put_planet(id):
     req_data = request.json
     result = put_info(req_data, "planets", "planet_id", id, P_PostOrPut)
-    resp_msg = json.dumps({"message": result})
+    resp_msg = json.dumps({"message": "Success, updated record...!" if result == 1 else "[ERROR] No records found!"})
     return Response(resp_msg, status=200, mimetype="application/json")
 
 @crud_app.route("/planets/<int:id>", methods=['PATCH'])
@@ -138,7 +146,19 @@ def patch_planet(id):
     res = patch_info(req_data, "planets", "planet_id", id, P_Patch)
     resp_msg = json.dumps({"message": res})
     return Response(resp_msg, status=200, mimetype="application/json")
-# ---------------------------------------------------------------------------------------------
+
+
+@crud_app.route("/planets", methods=['DELETE'])
+def delete_planet():
+    id = request.args.get("planet_id")
+    result = delete_info("planets", "planet_id", id)
+
+    success = f"Successfully deleted record of planet_id: {id} ...!!!"
+    error = f"[ERROR] no records found to delete against planet_id {id}"
+    resp_msg = json.dumps({"message": success if result == 1 else error})
+    return Response(resp_msg, status=200, mimetype="application/json")
+
+# --------------------------------------------------------------------------------------------------------------------
 
 @crud_app.route("/species", methods=["GET"])
 def get_species():
@@ -164,7 +184,7 @@ def post_species(id_):
 def put_species(id):
     req_data = request.json
     result = put_info(req_data, "species", "species_id", id, Sp_PostOrPut)
-    resp_msg = json.dumps({"message": result})
+    resp_msg = json.dumps({"message": "Success, updated record...!" if result == 1 else "[ERROR] No records found!"})
     return Response(resp_msg, status=200, mimetype="application/json")
 
 
@@ -175,7 +195,15 @@ def patch_species(id):
     resp_msg = json.dumps({"message": result})
     return Response(resp_msg, status=200, mimetype="application/json")
 
-# ---------------------------------------------------------------------------------------------
+
+@crud_app.route("/species", methods=['DELETE'])
+def delete_species():
+    id = request.args.get("species_id")
+    result = delete_info("species", "species_id", id)
+    resp_msg = json.dumps({"message": "Success, deleted record...!" if result == 1 else "[ERROR] No records found!"})
+    return Response(resp_msg, status=200, mimetype="application/json")
+
+# --------------------------------------------------------------------------------------------------------------------
 
 @crud_app.route("/starships", methods=["GET"])
 def get_starships():
@@ -201,7 +229,7 @@ def post_starship(id_):
 def put_starship(id):
     req_data = request.json
     result = put_info(req_data, "starships", "starship_id", id, St_PutOrPost)
-    resp_msg = json.dumps({"message": result})
+    resp_msg = json.dumps({"message": "Success, updated record...!" if result == 1 else "[ERROR] No records found!"})
     return Response(resp_msg, status=200, mimetype="application/json")
 
 
@@ -212,7 +240,14 @@ def patch_starship(id):
     resp_msg = json.dumps({"message": res})
     return Response(resp_msg, status=200, mimetype="application/json")
 
-# ---------------------------------------------------------------------------------------------
+
+@crud_app.route("/starships", methods=['DELETE'])
+def delete_starship():
+    id = request.args.get("starship_id")
+    result = delete_info("starships", "starship_id", id)
+    resp_msg = json.dumps({"message": "Success, deleted record...!" if result == 1 else "[ERROR] No records found!"})
+    return Response(resp_msg, status=200, mimetype="application/json")
+# --------------------------------------------------------------------------------------------------------------------
 
 
 @crud_app.route("/vehicles", methods=["GET"])
@@ -238,7 +273,7 @@ def post_vehicle(id_):
 def put_vehicle(id):
     req_data = request.json
     result = put_info(req_data, "vehicles", "vehicle_id", id, V_PostOrPut)
-    resp_msg = json.dumps({"message": result})
+    resp_msg = json.dumps({"message": "Success, updated record...!" if result == 1 else "[ERROR] No records found!"})
     return Response(resp_msg, status=200, mimetype="application/json")
 
 
@@ -249,7 +284,15 @@ def patch_vehicle(id):
     resp_msg = json.dumps({"message": res})
     return Response(resp_msg, status=200, mimetype="application/json")
 
-# ---------------------------------------------------------------------------------------------
+
+@crud_app.route("/vehicles", methods=['DELETE'])
+def delete_vehicle():
+    id = request.args.get("vehicle_id")
+    result = delete_info("vehicles", "vehicle_id", id)
+    resp_msg = json.dumps({"message": "Success, deleted record...!" if result == 1 else "[ERROR] No records found!"})
+    return Response(resp_msg, status=200, mimetype="application/json")
+
+# --------------------------------------------------------------------------------------------------------------------
 
 
 @crud_app.route("/characters", methods=["GET"])
@@ -276,7 +319,7 @@ def post_character(id_):
 def put_character(id):
     req_data = request.json
     result = put_info(req_data, "characters", "char_id", id, C_PostOrPut)
-    resp_msg = json.dumps({"message": result})
+    resp_msg = json.dumps({"message": "Success, updated record...!" if result == 1 else "[ERROR] No records found!"})
     return Response(resp_msg, status=200, mimetype="application/json")
 
 
@@ -287,7 +330,15 @@ def patch_character(id):
     resp_msg = json.dumps({"message": res})
     return Response(resp_msg, status=200, mimetype="application/json")
 
-# ---------------------------------------------------------------------------------------------
+
+@crud_app.route("/characters", methods=['DELETE'])
+def delete_character():
+    id = request.args.get("char_id")
+    result = delete_info("characters", "char_id", id)
+    resp_msg = json.dumps({"message": "Success, deleted record...!" if result == 1 else "[ERROR] No records found!"})
+    return Response(resp_msg, status=200, mimetype="application/json")
+
+# --------------------------------------------------------------------------------------------------------------------
 
 
 # mycursor.execute(f"select * from planets")

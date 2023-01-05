@@ -4,8 +4,8 @@ from models.datamodels.vehicles import Vehicles_from_db
 from models.datamodels.starships import Starships_from_db
 
 connection = pymysql.connect(
-    user='root',
-    password='root',
+    user='****',
+    password='****',
     database='practice',
     cursorclass=pymysql.cursors.DictCursor
 )
@@ -26,6 +26,7 @@ def get_infos(table:str, validator):
 
     return resp
 
+# --------------------------------------------------------------------------------------------------------------------
 
 def get_info(table:[str], primary_key:[str], validator, index:[int]):
     ''' Takes tables name, primary key and index number as argument and returns
@@ -46,6 +47,7 @@ def get_info(table:[str], primary_key:[str], validator, index:[int]):
         resp = json.dumps(resp)
         return resp
 
+# --------------------------------------------------------------------------------------------------------------------
 
 def post_info(req_data, table, primary_key, primary_val, validator):
 
@@ -67,6 +69,7 @@ def post_info(req_data, table, primary_key, primary_val, validator):
     except:
         return f"[ERROR] Could not POST data in {table} for id {primary_val}"
 
+# --------------------------------------------------------------------------------------------------------------------
 
 def put_info(req_data, table, primary_key, primary_val, validator):
 
@@ -74,8 +77,8 @@ def put_info(req_data, table, primary_key, primary_val, validator):
     try:
         v_data = validator(**req_data)
         data = dict(v_data)
-    except ValidationError:
-        return f"bad request...!!!"
+    except ValidationError as ve:
+        return f"Bad request... For details check - {ve}"
 
     columns_ = ", ".join(data.keys())
     # print(columns_.split(', '))
@@ -87,24 +90,24 @@ def put_info(req_data, table, primary_key, primary_val, validator):
         col_val_pair.append(f'''{k}="{(v)}"''')
 
     # Uncomment below statement to print the query.
-    # print(f"update {table} set {', '.join(col_val_pair)} where {primary_key}={primary_val}")
+    print(f"update {table} set {', '.join(col_val_pair)} where {primary_key}={primary_val};")
 
     try:
-        mycursor.execute(f"update {table} set  where {primary_key}={primary_val}")
+        resp = mycursor.execute(f"update {table} set {', '.join(col_val_pair)} where {primary_key}={primary_val};")
         connection.commit()
-        return f"Success, {primary_key}: {primary_val} is updated...!!!"
-
-    except:
-        return f"[ERROR] Could not update data in {table} for id {primary_val}"
+        return resp
 
 
+    except pymysql.Error as er:
+        print(f"[ERROR] - {er}")
+        return 0
+
+# --------------------------------------------------------------------------------------------------------------------
 
 def patch_info(data, table, primary_key, primary_val, validator):
     from pydantic.error_wrappers import ValidationError
     try:
         v_data = validator(**data)
-        # data = dict(v_data)
-        # print(data)
     except ValidationError as ve:
         return f"bad request...!!!{ve}"
 
@@ -124,10 +127,10 @@ def patch_info(data, table, primary_key, primary_val, validator):
 
     # query = f"insert into {table} ({', '.join(data.keys())}) values {tuple(data.values())}"
     # query = f"insert into {table} ({columns_},{primary_key}) values {tuple(values_1)}"
-    query = f"insert into {table} ({columns_},{primary_key}) values {tuple(values_1)} ON DUPLICATE KEY UPDATE {', '.join(col_val_pair)};"
-    print(query)
-    print()
-    print()
+    # query = f"insert into {table} ({columns_},{primary_key}) values {tuple(values_1)} ON DUPLICATE KEY UPDATE {', '.join(col_val_pair)};"
+    # print(query)
+    # print()
+    # print()
 
     try:
         mycursor.execute(f"insert into {table} ({columns_},{primary_key}) values {tuple(values_1)} ON DUPLICATE KEY UPDATE {', '.join(col_val_pair)};")
@@ -137,7 +140,19 @@ def patch_info(data, table, primary_key, primary_val, validator):
     except:
         return f"Could not update {primary_key}: {primary_val}"
 
+# --------------------------------------------------------------------------------------------------------------------
 
+def delete_info(table, primary_key, primary_val):
+    try:
+        resp = mycursor.execute(f"DELETE FROM {table} WHERE {primary_key}={primary_val}")
+        connection.commit()
+        return resp
+
+    except pymysql.Error as er:
+        print(f"[ERROR] - {er}")
+        return 0
+
+# --------------------------------------------------------------------------------------------------------------------
 
 
 # TestCases
